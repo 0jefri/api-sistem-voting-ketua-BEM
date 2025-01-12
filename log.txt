@@ -10,3 +10,6 @@ time="2025-01-12T20:19:15+07:00" level=info msg="{2025-01-12 20:19:15.623461549 
 time="2025-01-12T20:20:38+07:00" level=warning msg="{2025-01-12 20:20:38.167177028 +0700 WIB m=+92.852225137 534ns 404 ::1 POST /auth/login PostmanRuntime/7.29.4}"
 time="2025-01-12T20:20:53+07:00" level=info msg="{2025-01-12 20:20:53.987220144 +0700 WIB m=+108.672268251 695ns 200 ::1 POST /api/v1/voting/auth/login PostmanRuntime/7.29.4}"
 time="2025-01-12T20:21:06+07:00" level=info msg="{2025-01-12 20:21:06.398206812 +0700 WIB m=+121.083254922 267ns 200 ::1 POST /api/v1/voting/auth/login PostmanRuntime/7.29.4}"
+time="2025-01-12T22:31:36+07:00" level=info msg="{2025-01-12 22:31:36.976844626 +0700 WIB m=+70.521777986 241ns 200 ::1 POST /api/v1/voting/auth/logout PostmanRuntime/7.29.4}"
+time="2025-01-12T22:31:43+07:00" level=info msg="{2025-01-12 22:31:43.00798869 +0700 WIB m=+76.552922043 286ns 200 ::1 POST /api/v1/voting/auth/login PostmanRuntime/7.29.4}"
+time="2025-01-12T22:31:56+07:00" level=info msg="{2025-01-12 22:31:56.015660009 +0700 WIB m=+89.560593374 204ns 200 ::1 POST /api/v1/voting/auth/logout PostmanRuntime/7.29.4}"

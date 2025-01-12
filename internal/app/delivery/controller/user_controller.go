@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/api-voting/internal/app/service"
@@ -133,5 +134,46 @@ func (ctr *UserController) Login(c *gin.Context) {
 		Status:  exception.StatusSuccess,
 		Message: "Login Successful",
 		Token:   data,
+	})
+}
+
+func (ctr *UserController) Logout(c *gin.Context) {
+	// Ambil token dari header Authorization
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, dto.ErrorResponse{
+			Code:    http.StatusUnauthorized,
+			Status:  exception.StatusUnauthorized,
+			Message: "Missing Authorization Header",
+		})
+		return
+	}
+
+	// Hapus prefix "Bearer " jika ada
+	token := strings.TrimPrefix(authHeader, "Bearer ")
+	if token == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, dto.ErrorResponse{
+			Code:    http.StatusUnauthorized,
+			Status:  exception.StatusUnauthorized,
+			Message: "Invalid Authorization Header",
+		})
+		return
+	}
+
+	// Panggil service untuk logout
+	err := ctr.auth.Logout(token)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
+			Code:    http.StatusInternalServerError,
+			Status:  exception.StatusInternalServer,
+			Message: "Failed to logout",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.Response{
+		Code:    http.StatusOK,
+		Status:  exception.StatusSuccess,
+		Message: "Logout successful",
 	})
 }

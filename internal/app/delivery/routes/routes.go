@@ -28,6 +28,7 @@ func SetupRouter(router *gin.Engine) error {
 			{
 				auth.POST("/register", userController.Registration)
 				auth.POST("/login", userController.Login)
+				auth.POST("/logout", middleware.AuthMiddleware(), userController.Logout)
 			}
 		}
 	}

@@ -7,14 +7,16 @@ import (
 
 type AuthService interface {
 	Login(username string, password string) (string, error)
+	Logout(token string) error
 }
 
 type authService struct {
-	service UserService
+	service        UserService
+	tokenBlacklist map[string]struct{}
 }
 
 func NewAuthService(service UserService) AuthService {
-	return &authService{service: service}
+	return &authService{service: service, tokenBlacklist: make(map[string]struct{})}
 }
 
 func (s *authService) Login(username string, password string) (string, error) {
@@ -31,4 +33,15 @@ func (s *authService) Login(username string, password string) (string, error) {
 	}
 
 	return token, nil
+}
+
+func (s *authService) Logout(token string) error {
+	// Simpan token ke dalam blacklist
+	s.tokenBlacklist[token] = struct{}{}
+	return nil
+}
+
+func (s *authService) IsTokenBlacklisted(token string) bool {
+	_, exists := s.tokenBlacklist[token]
+	return exists
 }
