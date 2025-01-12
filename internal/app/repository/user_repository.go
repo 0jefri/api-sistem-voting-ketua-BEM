@@ -4,11 +4,15 @@ import (
 	"fmt"
 
 	"github.com/api-voting/internal/model"
+	"github.com/api-voting/utils/exception"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type UserRepository interface {
 	BaseRepository[model.User]
+	GetUsernamePassword(username, password string) (*model.User, error)
+	GetUsername(username string) (*model.User, error)
 }
 
 type userRepository struct {
@@ -45,4 +49,31 @@ func (r *userRepository) List() ([]*model.User, error) {
 	}
 
 	return users, nil
+}
+
+func (r *userRepository) GetUsername(username string) (*model.User, error) {
+	user := model.User{}
+
+	if err := r.db.Where("username = ?", username).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (r *userRepository) GetUsernamePassword(username, password string) (*model.User, error) {
+
+	user, err := r.GetUsername(username)
+
+	if err != nil {
+		return nil, exception.ErrNotFound
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+
+	if err != nil {
+		return nil, exception.ErrInvalidUsernamePassword
+	}
+
+	return user, err
 }

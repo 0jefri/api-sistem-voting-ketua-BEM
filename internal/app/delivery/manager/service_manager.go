@@ -6,7 +6,7 @@ import (
 
 type ServiceManager interface {
 	UserService() service.UserService
-	// AuthService() service.AuthService
+	AuthService() service.AuthService
 }
 
 type serviceManager struct {
@@ -23,6 +23,6 @@ func (m *serviceManager) UserService() service.UserService {
 	return service.NewUserService(m.repoManager.UserRepo())
 }
 
-// func (m *serviceManager) AuthService() service.AuthService {
-// 	return service.NewAuthService(m.UserService())
-// }
+func (m *serviceManager) AuthService() service.AuthService {
+	return service.NewAuthService(m.UserService())
+}

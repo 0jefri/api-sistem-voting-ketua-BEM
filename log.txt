@@ -6,3 +6,7 @@ time="2025-01-12T14:27:42+07:00" level=info msg="{2025-01-12 14:27:42.488220853 
 time="2025-01-12T14:27:50+07:00" level=info msg="{2025-01-12 14:27:50.748082022 +0700 WIB m=+17.717626714 365ns 200 ::1 POST /api/v1/voting/auth/register PostmanRuntime/7.29.4}"
 time="2025-01-12T14:29:40+07:00" level=info msg="{2025-01-12 14:29:40.04196379 +0700 WIB m=+20.162276966 442ns 200 ::1 POST /api/v1/voting/auth/register PostmanRuntime/7.29.4}"
 time="2025-01-12T14:30:38+07:00" level=info msg="{2025-01-12 14:30:38.6335384 +0700 WIB m=+3.600197977 455ns 200 ::1 POST /api/v1/voting/auth/register PostmanRuntime/7.29.4}"
+time="2025-01-12T20:19:15+07:00" level=info msg="{2025-01-12 20:19:15.623461549 +0700 WIB m=+10.308509650 442ns 200 ::1 POST /api/v1/voting/auth/register PostmanRuntime/7.29.4}"
+time="2025-01-12T20:20:38+07:00" level=warning msg="{2025-01-12 20:20:38.167177028 +0700 WIB m=+92.852225137 534ns 404 ::1 POST /auth/login PostmanRuntime/7.29.4}"
+time="2025-01-12T20:20:53+07:00" level=info msg="{2025-01-12 20:20:53.987220144 +0700 WIB m=+108.672268251 695ns 200 ::1 POST /api/v1/voting/auth/login PostmanRuntime/7.29.4}"
+time="2025-01-12T20:21:06+07:00" level=info msg="{2025-01-12 20:21:06.398206812 +0700 WIB m=+121.083254922 267ns 200 ::1 POST /api/v1/voting/auth/login PostmanRuntime/7.29.4}"

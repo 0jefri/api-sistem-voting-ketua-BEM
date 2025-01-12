@@ -15,13 +15,13 @@ import (
 
 type UserController struct {
 	service service.UserService
-	// auth        service.AuthService
+	auth    service.AuthService
 }
 
-func NewUserController(service service.UserService) *UserController {
+func NewUserController(service service.UserService, auth service.AuthService) *UserController {
 	return &UserController{
 		service: service,
-		// auth:        auth,
+		auth:    auth,
 	}
 }
 
@@ -66,5 +66,72 @@ func (ctr *UserController) Registration(c *gin.Context) {
 		Status:  exception.StatusSuccess,
 		Message: "Register Successful",
 		Data:    payload,
+	})
+}
+
+func (ctr *UserController) Login(c *gin.Context) {
+	payload := model.Auth{}
+
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, map[string]interface{}{
+			"code":    http.StatusBadRequest,
+			"status":  exception.StatusBadRequest,
+			"message": exception.FieldErrors(err),
+		})
+		return
+	}
+
+	data, err := ctr.auth.Login(payload.Username, payload.Password)
+
+	if err != nil {
+		if errors.Is(err, exception.ErrInvalidParseToken) {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
+				Code:    http.StatusInternalServerError,
+				Status:  exception.StatusInternalServer,
+				Message: exception.ErrInvalidParseToken.Error(),
+			})
+			return
+		}
+
+		if errors.Is(err, exception.ErrInvalidTokenStringMethod) {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
+				Code:    http.StatusInternalServerError,
+				Status:  exception.StatusInternalServer,
+				Message: exception.ErrInvalidTokenStringMethod.Error(),
+			})
+			return
+		}
+
+		if errors.Is(err, exception.ErrInvalidTokenMapclaims) {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
+				Code:    http.StatusInternalServerError,
+				Status:  exception.StatusInternalServer,
+				Message: exception.ErrInvalidTokenMapclaims.Error(),
+			})
+			return
+		}
+
+		if errors.Is(err, exception.ErrFailedCreateToken) {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
+				Code:    http.StatusInternalServerError,
+				Status:  exception.StatusInternalServer,
+				Message: exception.ErrFailedCreateToken.Error(),
+			})
+			return
+		}
+
+		c.AbortWithStatusJSON(http.StatusInternalServerError, dto.ErrorResponse{
+			Code:    http.StatusInternalServerError,
+			Status:  exception.StatusInternalServer,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.TokenResponse{
+		Code:    http.StatusOK,
+		Status:  exception.StatusSuccess,
+		Message: "Login Successful",
+		Token:   data,
 	})
 }

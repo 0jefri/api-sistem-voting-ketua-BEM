@@ -13,6 +13,7 @@ import (
 
 type UserService interface {
 	RegisterNewUser(payload *model.User) (*dto.UserResponse, error)
+	FindByUsernamePassword(username string, password string) (*model.User, error)
 }
 
 type userService struct {
@@ -62,4 +63,8 @@ func (s *userService) RegisterNewUser(payload *model.User) (*dto.UserResponse, e
 	}
 
 	return &userResponse, err
+}
+
+func (s *userService) FindByUsernamePassword(username string, password string) (*model.User, error) {
+	return s.repo.GetUsernamePassword(username, password)
 }
